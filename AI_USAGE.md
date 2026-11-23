@@ -1,6 +1,7 @@
 # AI Usage Declaration
 
 Project: Üki Coach — Adaptive Quiz Coach (AI Fundamentals, AIF1303, QAIRU)
+
 Author: Коваль Амир
 
 ## Tools
