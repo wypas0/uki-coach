@@ -161,7 +161,7 @@ function renderSheet(res) {
   }
 
   sheet.innerHTML = `${progress}
-    <h2 class="q-text">Review the key idea</h2>
+    <h2 class="q-text">Review the idea</h2>
     <div class="review-card"><p>${esc(q.review)}</p></div>
     <p class="muted small">You chose ${'ABCD'[chosen]}, the answer was ${'ABCD'[q.answer]}. ${esc(q.explain)}</p>
     <p class="muted small">Because you reviewed, the model now expects a Beginner to reach Ready with probability ${MODEL.mdp.P.Beginner.Review[1]} before the next answer, instead of ${MODEL.mdp.P.Beginner[NEXT][1]}.</p>

@@ -1,17 +1,17 @@
-# Üki Coach — Adaptive Quiz Coach
+# Üki Coach: an adaptive quiz coach
 
-Final project for **AI Fundamentals (AIF1303), QAIRU**, topic 01 "Mini Adaptive Quiz Coach".
+Final project for AI Fundamentals (AIF1303), QAIRU, topic 01 "Mini Adaptive Quiz Coach".
 Author: Коваль Амир (solo project).
 
-**Problem.** A score alone does not tell a student what to do next. After every answer of a short Python quiz the coach decides whether the student should review the idea or move on.
+A quiz score does not tell a student what to do next. After every answer in a short Python quiz, this coach decides whether the student should review the idea or go on to the next question.
 
 | Step | Algorithm | Question it answers | Output |
 |---|---|---|---|
-| 1 | **Bayesian inference** | Does the student know this topic? | P(know \| answer), mastery at 85% |
-| 2 | **Hidden Markov model + Viterbi** | Which learning stage is the student in? | most likely Beginner / Ready sequence |
-| 3 | **Markov decision process** | What should the coach do now? | Review or Next question |
+| 1 | Bayesian inference | Does the student know this topic? | P(know \| answer), mastery at 85% |
+| 2 | Hidden Markov model + Viterbi | Which learning stage is the student in? | most likely Beginner / Ready sequence |
+| 3 | Markov decision process | What should the coach do now? | Review or Next question |
 
-**One model links them.** The HMM moves between stages with exactly the probabilities the MDP uses for *Next question* (T = [[0.8, 0.2], [0.1, 0.9]]). When the coach makes the student review, the next HMM step uses the MDP's *Review* row instead (Beginner → Ready 0.6 instead of 0.2). The stage Viterbi finds is the state the MDP acts on.
+The three parts share one model. The HMM moves between stages with the same probabilities the MDP uses for Next question (T = [[0.8, 0.2], [0.1, 0.9]]). After a review, the next HMM step uses the MDP's Review row, so Beginner → Ready becomes 0.6 instead of 0.2. The stage that Viterbi finds is the state the MDP acts on.
 
 ## Run it
 
@@ -27,11 +27,11 @@ node tests/engine.test.mjs                 # 26 checks: the web app matches the 
 
 Web app: open `index.html` through any static server (`python -m http.server`). No build step.
 
-## Model (hypothetical teaching values, clearly labelled)
+## Model (hypothetical teaching values)
 
-- **Bayes:** prior P(know) = 0.5; slip P(wrong \| know) = 0.1; guess P(correct \| don't know) = 0.25 (one of four options); mastery 0.85.
-- **HMM:** states Beginner, Ready; π = (0.7, 0.3); T = MDP *Next question* row; P(correct \| Beginner) = 0.35, P(correct \| Ready) = 0.75.
-- **MDP:** γ = 0.9.
+- Bayes: prior P(know) = 0.5; slip P(wrong \| know) = 0.1; guess P(correct \| don't know) = 0.25 (one of four options); mastery 0.85.
+- HMM: states Beginner, Ready; π = (0.7, 0.3); T = MDP *Next question* row; P(correct \| Beginner) = 0.35, P(correct \| Ready) = 0.75.
+- MDP: γ = 0.9.
 
 | State, action | P(next = Beginner) | P(next = Ready) | Reward |
 |---|---|---|---|
@@ -107,7 +107,7 @@ Summary
   Recommended action    : Next question
 ```
 
-Bayes stays at 45% because it treats knowledge as fixed, so early mistakes keep counting. The HMM lets the student improve, so it moves to Ready after the first correct answer that follows a review. The two models answer different questions, and that difference is why both are used.
+Bayes stays at 45% because it treats knowledge as fixed, so early mistakes keep counting. The HMM lets the student improve, so it moves to Ready after the first correct answer that follows a review. Bayes answers whether the student knows the topic overall; the HMM answers where the student is now. The project uses both for that reason.
 
 ## Results: evaluation
 
@@ -127,16 +127,16 @@ Exact expectation over every start stage, answer and transition of the model (no
 ```
 
 - The coach earns 7.38 of the 11.98 possible if the true stage were known, and beats every simple rule.
-- **Reacting to the last answer only** (6.46) is worse, because one answer is noisy: a Ready student still misses 25% of questions. The HMM's memory of earlier answers is what helps.
-- **Bayes only** (3.16) keeps reviewing after the student has improved, which is why the stage model is needed.
-- The soft coach, which weights Q by the filtered P(Ready), is slightly better again (7.41), a natural next step.
+- Reacting only to the last answer scores 6.46. One answer is a noisy signal (a Ready student still misses 25% of questions), and the HMM gains by remembering the earlier answers.
+- Bayes alone scores 3.16, because it keeps sending the student to review after they have improved.
+- The soft coach, which weights Q by the filtered P(Ready), scores slightly higher (7.41). It would be the next thing to try.
 - What-if: the Beginner policy flips from Review to Next question when R(Beginner, Next question) rises above about +1.99.
 
 ## Limitations and possible improvements
 
-- Parameters are hand-set; with real student data they could be estimated (Baum–Welch for the HMM, logged outcomes for the MDP).
+- The parameters are set by hand. With real student data they could be estimated (Baum–Welch for the HMM, logged outcomes for the MDP).
 - Bayes treats answers as independent given fixed knowledge; Bayesian Knowledge Tracing would merge steps 1 and 2.
-- Two stages and two actions only; hints, easier questions and per-question difficulty are natural extensions.
+- The model has two stages and two actions. Hints, easier questions and per-question difficulty could be added.
 - The evaluation uses the model's own assumptions; a real study would compare the strategies with students.
 
 ## Documents

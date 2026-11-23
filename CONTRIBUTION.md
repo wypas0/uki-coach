@@ -1,6 +1,6 @@
 # Team Contribution Statement
 
-Project: Üki Coach — Adaptive Quiz Coach (AI Fundamentals, AIF1303, QAIRU)
+Project: Üki Coach, an adaptive quiz coach (AI Fundamentals, AIF1303, QAIRU)
 
 This is a solo project.
 

@@ -1,6 +1,6 @@
 # AI Usage Declaration
 
-Project: Üki Coach — Adaptive Quiz Coach (AI Fundamentals, AIF1303, QAIRU)
+Project: Üki Coach, an adaptive quiz coach (AI Fundamentals, AIF1303, QAIRU)
 
 Author: Коваль Амир
 
@@ -8,11 +8,11 @@ Author: Коваль Амир
 
 | Tool | Used for |
 |---|---|
-| Claude (Anthropic), November 2026 | Comparing project ideas, drafting the code (`engine.mjs`, `app.mjs`, `python/quiz_coach.py`, tests), the README, the technical report, the presentation and the demo-video script |
+| Claude (Anthropic), November 2026 | Comparing project ideas; drafting the code (`engine.mjs`, `app.mjs`, `python/quiz_coach.py`, tests), the README, the technical report, the presentation and the demo-video script |
 | unslop skill by Damir Sokolovsky (@heydamir, CC BY 4.0) | Checklist for the visual design pass of the web app |
-| AI text-to-speech | English narration of the 2–3 minute demo video |
+| AI text-to-speech | English narration of the two-minute demo video |
 
-## Key prompts (summarised)
+## Main prompts (summarised)
 
 - "Propose project options for topic 01 (Mini Adaptive Quiz Coach) that combine Bayes, HMM/Viterbi and MDP."
 - "Build the coach: answers must match the assignment exactly (Bayes after one answer, Viterbi on three answers, MDP 2 states × 2 actions)."
