@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Üki Coach</title>
+<meta name="description" content="An adaptive quiz coach for AI Fundamentals: Bayesian inference estimates what you know, an HMM with Viterbi finds your learning stage, and an MDP decides whether you should review or move on.">
+<meta property="og:title" content="Üki Coach">
+<meta property="og:description" content="Bayes + HMM/Viterbi + MDP deciding, after every answer, whether a student should review or move on.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='34' r='26' fill='%231F2A55'/%3E%3Ccircle cx='23' cy='30' r='8' fill='%23F4F6F9'/%3E%3Ccircle cx='41' cy='30' r='8' fill='%23F4F6F9'/%3E%3Ccircle cx='23' cy='30' r='3.5' fill='%23B7791F'/%3E%3Ccircle cx='41' cy='30' r='3.5' fill='%230E7C6B'/%3E%3Cpath d='M29 40l3 5 3-5z' fill='%23B7791F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button class="brand" type="button" data-action="home" aria-label="Üki Coach, back to the start">
+    <svg class="owl" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="34" r="26" class="owl-body"/><circle cx="23" cy="30" r="8" class="owl-eye"/><circle cx="41" cy="30" r="8" class="owl-eye"/><circle cx="23" cy="30" r="3.5" class="owl-pupil-b"/><circle cx="41" cy="30" r="3.5" class="owl-pupil-r"/><path d="M29 40l3 5 3-5z" class="owl-beak"/></svg>
+    <span>Üki Coach</span>
+  </button>
+  <p class="topbar-status" id="topbar-status" aria-live="polite"></p>
+</header>
+
+<main id="main">
+  <!-- Start screen -->
+  <section class="view view-start" id="view-start" aria-labelledby="start-title">
+    <div class="hero">
+      <div class="hero-text">
+        <h1 id="start-title">Five quiz questions and a coach that decides when you should review</h1>
+        <p class="lede">After every answer, Üki the owl updates how likely you are to know the topic, which learning stage you are in, and whether a review or a new question will help you more.</p>
+        <div class="actions">
+          <button class="btn btn-primary" type="button" data-topic="python">Start the Python quiz</button>
+          <a class="btn btn-quiet" href="#results">See how well it coaches</a>
+        </div>
+      </div>
+      <figure class="preview" aria-labelledby="preview-cap">
+        <div class="preview-head">
+          <span class="marks" id="preview-marks" aria-hidden="true"></span>
+          <span class="muted small">Three Python answers</span>
+        </div>
+        <div class="paper"><svg id="preview-trellis" role="img" aria-label="Viterbi path for the answers wrong, correct, correct"></svg></div>
+        <dl class="preview-out" id="preview-out"></dl>
+        <figcaption id="preview-cap" class="small muted">The example from the assignment: Bayes after one answer, Viterbi on three answers, and the MDP decision for the last stage.</figcaption>
+      </figure>
+    </div>
+
+    <div class="start-grid">
+      <div>
+        <h2 class="h-section">Pick a topic</h2>
+        <ul class="topic-list" id="topic-list"></ul>
+      </div>
+      <div>
+        <h2 class="h-section">How Üki decides</h2>
+        <ol class="how">
+          <li><strong>Bayesian inference</strong> turns your answer into an updated probability that you know the topic.</li>
+          <li><strong>Hidden Markov model and Viterbi</strong> read your answers together and find the most likely path of learning stages, Beginner or Ready.</li>
+          <li><strong>Markov decision process</strong> compares the long-term value of Review and Next question in your current stage and recommends the better one.</li>
+        </ol>
+        <p class="small muted">One model links them: the HMM moves between stages with the same probabilities the MDP uses for Next question, and a review changes those probabilities for the next answer.</p>
+        <h2 class="h-section">Or watch a demo</h2>
+        <div class="demo-list" id="demo-list"></div>
+      </div>
+    </div>
+
+    <section class="results" id="results" aria-labelledby="results-title">
+      <h2 class="h-section" id="results-title">How well it coaches</h2>
+      <div class="results-grid">
+        <div>
+          <p class="small muted">Expected total reward over a five-question session, worked out exactly over every start stage, answer and stage change in the model. Higher is better.</p>
+          <ol class="eval" id="eval-list"></ol>
+          <p class="small" id="eval-finding"></p>
+        </div>
+        <div class="whatif">
+          <h3 class="h-sub">What would change Üki’s mind</h3>
+          <p class="small muted">Reward for giving a new question to a Beginner. In the model it is −2: a new question too early wastes time.</p>
+          <label class="slider-label" for="whatif-r">R(Beginner, Next question) <output id="whatif-val" for="whatif-r">−2</output></label>
+          <input type="range" id="whatif-r" min="-3" max="3" step="0.5" value="-2">
+          <dl class="whatif-out" id="whatif-out"></dl>
+          <p class="small muted" id="whatif-note"></p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- Quiz screen -->
+  <section class="view view-quiz" id="view-quiz" hidden aria-labelledby="quiz-topic">
+    <div class="trellis-band">
+      <div class="trellis-head">
+        <h1 class="quiz-topic" id="quiz-topic"></h1>
+        <p class="muted small" id="trellis-caption">Your learning stages so far. The line is the Viterbi path, the single most likely sequence of stages. Circle size is the filtered probability of each stage.</p>
+      </div>
+      <div class="paper"><svg id="trellis" role="img" aria-labelledby="trellis-title trellis-desc"><title id="trellis-title">Learning-stage trellis</title><desc id="trellis-desc"></desc></svg></div>
+    </div>
+
+    <div class="quiz-grid">
+      <article class="sheet" id="sheet" aria-live="polite"></article>
+      <aside class="reasoning" id="reasoning" aria-label="How Üki reasoned"></aside>
+    </div>
+  </section>
+
+  <!-- Summary screen -->
+  <section class="view view-summary" id="view-summary" hidden aria-labelledby="summary-title"></section>
+
+  <details class="assumptions" id="assumptions">
+    <summary>Model assumptions and parameters</summary>
+    <div class="assumptions-body" id="assumptions-body"></div>
+  </details>
+</main>
+
+<footer class="foot">
+  <p>Final project for AI Fundamentals (AIF1303), QAIRU. Author: Коваль Амир. All probabilities and rewards are hypothetical teaching values, not a trained model. Built with AI assistance and checked by the author; the README has the AI-use declaration. Design pass based on unslop by Damir Sokolovsky (@heydamir), CC BY 4.0.</p>
+</footer>
+
+<script type="module" src="app.mjs"></script>
+</body>
+</html>
