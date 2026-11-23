@@ -143,6 +143,7 @@ Exact expectation over every start stage, answer and transition of the model (no
 
 - [Technical report](docs/TECHNICAL_REPORT.pdf)
 - [Presentation](docs/PRESENTATION.pdf)
+- [Demo video, 2 min](docs/demo.mp4)
 - [AI usage declaration](AI_USAGE.md)
 - [Contribution statement](CONTRIBUTION.md)
 
