@@ -147,6 +147,3 @@ Exact expectation over every start stage, answer and transition of the model (no
 - [AI usage declaration](AI_USAGE.md)
 - [Contribution statement](CONTRIBUTION.md)
 
-## AI-use declaration
-
-Tool: Claude (Anthropic), November 2026. Purpose: proposing the design, drafting the code (engine, UI, Python script, tests) and this README; the visual design pass follows the unslop skill by Damir Sokolovsky (@heydamir, CC BY 4.0). Verification: hand-checked calculations above, 8 Python unit tests, 26 JS–Python parity checks, and manual testing of every screen on desktop and mobile. The author reviewed the code and is responsible for explaining it.
