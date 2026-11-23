@@ -147,3 +147,6 @@ Exact expectation over every start stage, answer and transition of the model (no
 - [AI usage declaration](AI_USAGE.md)
 - [Contribution statement](CONTRIBUTION.md)
 
+## AI usage declaration
+
+Generative AI tools were used in this project under the author's direction. The author defined the problem and scope, chose how the three algorithms are integrated, approved the model and the coaching policy, reviewed all AI-assisted work, and verified the results against the hand calculations and the 34 automated tests. Claude (Anthropic) drafted much of the code and the documentation; the unslop and humanizer skills were used for design and language review, and a local Piper voice model narrated the demo video. The full declaration, with the author's role and the extent of each tool's use, is in [AI_USAGE.md](AI_USAGE.md).
